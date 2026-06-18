@@ -993,18 +993,7 @@
     flex-shrink: 0;
   }
   .conflict-footer { gap: 0.5rem; flex-wrap: wrap; }
-  .btn-submit-anyway {
-    padding: 0.65rem 1.1rem;
-    border: 1.5px solid var(--rule);
-    border-radius: var(--r);
-    background: #fff;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-submit-anyway:hover { background: var(--bg); border-color: #aaa; }
+
   .btn-overwrite {
     padding: 0.65rem 1.25rem;
     border: none;
@@ -3222,7 +3211,6 @@
     </div>
     <div class="modal-footer conflict-footer">
       <button type="button" class="btn-back-edit" onclick="closeConflictModal()">&#8592; Go Back</button>
-      <button type="button" class="btn-submit-anyway" onclick="submitAnyway()">Submit Anyway</button>
       <button type="button" class="btn-overwrite" id="overwriteBtn" onclick="overwriteAndSubmit()">Overwrite &amp; Submit</button>
     </div>
   </div>
@@ -3968,10 +3956,6 @@ function closeConflictModal() {
   pendingConflicts = [];
 }
 
-function submitAnyway() {
-  closeConflictModal();
-  showConfirmModal();
-}
 
 async function overwriteAndSubmit() {
   const btn = document.getElementById('overwriteBtn');
