@@ -928,12 +928,22 @@
 
   /* ── DAY SELECTOR MOBILE ── */
   .day-abbr { display: none; }
-  @media (max-width: 540px) {
+  @media (max-width: 700px) {
     .day-full { display: none; }
-    .day-abbr { display: inline; }
-    .day-selector-grid { gap: 0.25rem; padding: 0.75rem 0.6rem; }
-    .day-sel-btn { padding: 0.5rem 0.1rem; font-size: 0.72rem; }
-    .day-sel-btn .day-num { font-size: 0.65rem; }
+    .day-abbr { display: inline; font-size: clamp(0.6rem, 2.8vw, 0.78rem); }
+    .day-selector-grid {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: clamp(2px, 1vw, 6px);
+      padding: 0.75rem clamp(4px, 2vw, 12px);
+    }
+    .day-sel-btn {
+      padding: clamp(6px, 1.8vw, 10px) clamp(1px, 0.5vw, 4px);
+      font-size: clamp(0.6rem, 2.8vw, 0.78rem);
+      letter-spacing: 0;
+      gap: 1px;
+    }
+    .day-sel-btn .day-num { font-size: clamp(0.55rem, 2.4vw, 0.7rem); }
+    .day-worked-label { font-size: clamp(0.48rem, 2vw, 0.6rem); gap: 1px; }
   }
 </style>
 </head>
