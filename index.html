@@ -196,14 +196,20 @@
   input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
 
   /* ── DAY ROWS ── */
-  .days-grid { display: flex; flex-direction: column; gap: 0; }
+  .days-grid { display: flex; flex-direction: column; gap: 0; padding: 1rem 1rem 0.25rem; }
 
   .day-row {
-    border-bottom: 1px solid var(--rule);
     overflow: hidden;
     transition: background 0.12s;
   }
-  .day-row:last-child { border-bottom: none; }
+  .day-row.day-active {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 1.5px solid #b8cfe0;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+    overflow: hidden;
+  }
+  .day-row.day-active:last-child { margin-bottom: 0; }
 
   .day-header {
     display: flex;
