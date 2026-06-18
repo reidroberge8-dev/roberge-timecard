@@ -3700,7 +3700,13 @@ DAYS.forEach(function(_, i) {
 });
 
 // Load saved draft (clear if stale/corrupt)
+const hadDraft = !!localStorage.getItem(STORAGE_KEY);
 try { loadDraft(); } catch(e) { localStorage.removeItem(STORAGE_KEY); }
+
+// Default Mon–Fri selected if no saved draft
+if (!hadDraft) {
+  [1,2,3,4,5].forEach(i => toggleDaySelection(i));
+}
 
 // Pre-fill saved name on mobile if stored
 loadSavedName();
