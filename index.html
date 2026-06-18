@@ -904,15 +904,10 @@
 
   /* ── SAVE NAME (mobile only) ── */
   .save-name-row {
-    display: none;
-  }
-  @media (max-width: 768px) {
-    .save-name-row {
-      display: flex;
-      align-items: center;
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
-    }
+    display: flex;
+    align-items: center;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
   }
   .save-name-label {
     display: flex;
@@ -3348,6 +3343,7 @@ function saveDraft() {
   saveTimer = setTimeout(() => {
     const data = collectFormData();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (document.getElementById('saveNameToggle').checked) persistSavedName();
     badge.textContent = 'Draft auto-saved';
     badge.className = 'saved-badge saved';
     setTimeout(() => badge.className = 'saved-badge', 2000);
