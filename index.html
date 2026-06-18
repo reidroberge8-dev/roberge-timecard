@@ -3145,6 +3145,12 @@ function toggleDaySelection(i) {
     // Select: show row and open it
     btn.classList.add('selected');
     row.classList.add('day-active', 'open');
+    // Re-apply defaults if fields were cleared
+    const startEl = document.getElementById('start' + i);
+    const endEl   = document.getElementById('end'   + i);
+    if (startEl && !startEl.value) startEl.value = '06:30';
+    if (endEl   && !endEl.value)   endEl.value   = '15:00';
+    calcDay(i);
   }
   calcTotal();
   saveDraft();
