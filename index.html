@@ -946,6 +946,78 @@
     .day-sel-btn .day-num { font-size: clamp(0.55rem, 2.4vw, 0.7rem); }
     .day-worked-label { font-size: clamp(0.48rem, 2vw, 0.6rem); gap: 1px; }
   }
+
+  /* ── CONFLICT MODAL ── */
+  .conflict-modal-header { background: #a05c00; }
+  .conflict-employee {
+    padding: 0.9rem 1.5rem;
+    background: #fff8ee;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-bottom: 1px solid #f0d090;
+    color: #6b3a00;
+    flex-shrink: 0;
+  }
+  .conflict-item {
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.85rem;
+  }
+  .conflict-item:last-child { border-bottom: none; }
+  .conflict-day-name {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .conflict-row {
+    display: flex;
+    gap: 0.4rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 0.2rem;
+    font-size: 0.83rem;
+  }
+  .conflict-label { color: var(--text-mid); min-width: 4.5rem; }
+  .conflict-new  { color: #153d0b; font-weight: 600; }
+  .conflict-exist { color: #a05c00; font-weight: 600; }
+  .conflict-warning {
+    padding: 0.75rem 1.5rem;
+    background: #fff3e0;
+    border-top: 1px solid #f0d090;
+    font-size: 0.8rem;
+    color: #6b3a00;
+    flex-shrink: 0;
+  }
+  .conflict-footer { gap: 0.5rem; flex-wrap: wrap; }
+  .btn-submit-anyway {
+    padding: 0.65rem 1.1rem;
+    border: 1.5px solid var(--rule);
+    border-radius: var(--r);
+    background: #fff;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-submit-anyway:hover { background: var(--bg); border-color: #aaa; }
+  .btn-overwrite {
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: var(--r);
+    background: #c45000;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-overwrite:hover { background: #a03d00; }
+  .btn-overwrite:disabled { opacity: 0.6; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -3134,6 +3206,28 @@
   </div>
 </div>
 
+<!-- CONFLICT MODAL -->
+<div id="conflictModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-header conflict-modal-header">
+      <div class="modal-title">&#9888; Duplicate Hours Detected</div>
+      <div class="modal-sub">Existing time card data overlaps with this submission.</div>
+    </div>
+    <div class="conflict-employee" id="conflictEmployee"></div>
+    <div class="modal-table-wrap">
+      <div id="conflictList"></div>
+    </div>
+    <div class="conflict-warning">
+      <strong>Overwrite</strong> will permanently delete the existing time card for that week before submitting your new one.
+    </div>
+    <div class="modal-footer conflict-footer">
+      <button type="button" class="btn-back-edit" onclick="closeConflictModal()">&#8592; Go Back</button>
+      <button type="button" class="btn-submit-anyway" onclick="submitAnyway()">Submit Anyway</button>
+      <button type="button" class="btn-overwrite" id="overwriteBtn" onclick="overwriteAndSubmit()">Overwrite &amp; Submit</button>
+    </div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="footer-company">Roberge Painting Company &mdash; Timesheet <span id="footerYear"></span></div>
   <div class="footer-contact">29 Church Ave, Bristol, CT 06010 &nbsp;&bull;&nbsp; (860) 582-6131</div>
@@ -3491,10 +3585,23 @@ function validate() {
 }
 
 // ── SUBMIT ───────────────────────────────────────────────────────────────────
-document.getElementById('timecardForm').addEventListener('submit', (e) => {
+document.getElementById('timecardForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!validate()) return;
-  showConfirmModal();
+  const submitBtn = e.submitter || document.querySelector('.btn-submit');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Checking…'; }
+  try {
+    const conflicts = await checkForConflicts();
+    if (conflicts.length > 0) {
+      showConflictModal(conflicts);
+    } else {
+      showConfirmModal();
+    }
+  } catch(err) {
+    showConfirmModal();
+  } finally {
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit Time Card →'; }
+  }
 });
 
 function resetForm() {
@@ -3732,6 +3839,169 @@ loadSavedName();
   }
   updateDateLabels();
 })();
+
+// ── DUPLICATE / CONFLICT DETECTION ──────────────────────────────────────────
+let pendingConflicts = [];
+
+function timeToMins(t) {
+  if (!t) return null;
+  const parts = t.split(':');
+  if (parts.length < 2) return null;
+  return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+}
+
+function timesOverlap(s1, e1, s2, e2) {
+  const a = timeToMins(s1), b = timeToMins(e1);
+  const c = timeToMins(s2), d = timeToMins(e2);
+  if (a === null || b === null || c === null || d === null) return false;
+  return a < d && c < b;
+}
+
+// Compute full MM/DD/YYYY date for day index i relative to weekEnd (YYYY-MM-DD)
+function dayFullDate(weekEnd, i) {
+  const sat = new Date(weekEnd + 'T00:00:00');
+  const d   = new Date(sat);
+  d.setDate(sat.getDate() - (6 - i));
+  return String(d.getMonth() + 1).padStart(2,'0') + '/' +
+         String(d.getDate()).padStart(2,'0') + '/' +
+         d.getFullYear();
+}
+
+async function checkForConflicts() {
+  const d = collectFormData();
+  if (!d.firstName || !d.lastName || !d.weekEnd) return [];
+
+  const url = SUBMIT_URL + '?fn=' + encodeURIComponent(d.firstName) +
+                           '&ln=' + encodeURIComponent(d.lastName);
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    const resp = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    if (!resp.ok) return [];
+    const result = await resp.json();
+    if (!result.rows || !result.rows.length) return [];
+
+    // Group conflicts by existing weekEnd
+    const conflictMap = {};
+    for (const row of result.rows) {
+      for (let i = 0; i < 7; i++) {
+        const nd = d.days[i];
+        const ed = row.days[i];
+        if (!nd || !nd.selected || !nd.start || !nd.end) continue;
+        if (!ed || !ed.date || !ed.start || !ed.end) continue;
+        // Compare dates using full computed date
+        const newDateFull = dayFullDate(d.weekEnd, i);
+        // Normalize existing date to MM/DD/YYYY with leading zeros
+        const existParts = ed.date.split('/');
+        const existNorm  = existParts.length === 3
+          ? existParts[0].padStart(2,'0') + '/' + existParts[1].padStart(2,'0') + '/' + existParts[2]
+          : ed.date;
+        if (newDateFull !== existNorm) continue;
+        if (!timesOverlap(nd.start, nd.end, ed.start, ed.end)) continue;
+        const key = row.firstName + '|' + row.lastName + '|' + row.weekEnd;
+        if (!conflictMap[key]) {
+          conflictMap[key] = {
+            firstName: row.firstName, lastName: row.lastName,
+            weekEnd: row.weekEnd, days: []
+          };
+        }
+        conflictMap[key].days.push({
+          dayName: DAYS[i], date: newDateFull,
+          newStart: nd.start, newEnd: nd.end,
+          existStart: ed.start, existEnd: ed.end,
+        });
+      }
+    }
+    return Object.values(conflictMap);
+  } catch(err) {
+    return []; // On error, allow submit without conflict check
+  }
+}
+
+function fmtTimeFriendly(t) {
+  if (!t) return '—';
+  const [h, m] = t.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return h12 + ':' + String(m).padStart(2,'0') + ' ' + period;
+}
+
+function showConflictModal(conflicts) {
+  pendingConflicts = conflicts;
+  const d = collectFormData();
+  document.getElementById('conflictEmployee').textContent =
+    d.firstName + ' ' + d.lastName;
+
+  const list = document.getElementById('conflictList');
+  list.innerHTML = '';
+
+  conflicts.forEach(conf => {
+    conf.days.forEach(day => {
+      const item = document.createElement('div');
+      item.className = 'conflict-item';
+      item.innerHTML =
+        '<div class="conflict-day-name">' + day.dayName + ' &mdash; ' + day.date + '</div>' +
+        '<div class="conflict-row">' +
+          '<span class="conflict-label">Submitting:</span>' +
+          '<span class="conflict-new">' + fmtTimeFriendly(day.newStart) + ' &ndash; ' + fmtTimeFriendly(day.newEnd) + '</span>' +
+        '</div>' +
+        '<div class="conflict-row">' +
+          '<span class="conflict-label">On file:</span>' +
+          '<span class="conflict-exist">' + fmtTimeFriendly(day.existStart) + ' &ndash; ' + fmtTimeFriendly(day.existEnd) + '</span>' +
+          '<span style="color:var(--text-light);font-size:0.78rem">(week ending ' + conf.weekEnd + ')</span>' +
+        '</div>';
+      list.appendChild(item);
+    });
+  });
+
+  const btn = document.getElementById('overwriteBtn');
+  btn.disabled = false;
+  btn.textContent = 'Overwrite & Submit';
+  document.getElementById('conflictModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConflictModal() {
+  document.getElementById('conflictModal').classList.add('hidden');
+  document.body.style.overflow = '';
+  pendingConflicts = [];
+}
+
+function submitAnyway() {
+  closeConflictModal();
+  showConfirmModal();
+}
+
+async function overwriteAndSubmit() {
+  const btn = document.getElementById('overwriteBtn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting old data…';
+
+  const d = collectFormData();
+
+  // Delete each conflicting week
+  const deletePromises = pendingConflicts.map(conf =>
+    fetch(SUBMIT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'deleteByKey',
+        firstName: conf.firstName,
+        lastName:  conf.lastName,
+        weekEnd:   conf.weekEnd,
+      }),
+    }).catch(() => {})
+  );
+  await Promise.all(deletePromises);
+
+  // Brief pause to allow Apps Script to finish deleting
+  await new Promise(r => setTimeout(r, 800));
+
+  closeConflictModal();
+  showConfirmModal();
+}
 </script>
 </body>
 </html>
