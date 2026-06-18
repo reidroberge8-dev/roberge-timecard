@@ -925,6 +925,16 @@
     flex-shrink: 0;
   }
 
+
+  /* ── DAY SELECTOR MOBILE ── */
+  .day-abbr { display: none; }
+  @media (max-width: 540px) {
+    .day-full { display: none; }
+    .day-abbr { display: inline; }
+    .day-selector-grid { gap: 0.25rem; padding: 0.75rem 0.6rem; }
+    .day-sel-btn { padding: 0.5rem 0.1rem; font-size: 0.72rem; }
+    .day-sel-btn .day-num { font-size: 0.65rem; }
+  }
 </style>
 </head>
 <body>
@@ -1000,31 +1010,31 @@
       </div>
       <div class="day-selector-grid" id="daySelectorGrid">
         <button type="button" class="day-sel-btn" id="daySelBtn0" onclick="toggleDaySelection(0)">
-          <span>Sunday</span><span class="day-num" id="daySelNum0">—</span>
+          <span class="day-full">Sunday</span><span class="day-abbr">Sun</span><span class="day-num" id="daySelNum0">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn1" onclick="toggleDaySelection(1)">
-          <span>Monday</span><span class="day-num" id="daySelNum1">—</span>
+          <span class="day-full">Monday</span><span class="day-abbr">Mon</span><span class="day-num" id="daySelNum1">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn2" onclick="toggleDaySelection(2)">
-          <span>Tuesday</span><span class="day-num" id="daySelNum2">—</span>
+          <span class="day-full">Tuesday</span><span class="day-abbr">Tue</span><span class="day-num" id="daySelNum2">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn3" onclick="toggleDaySelection(3)">
-          <span>Wednesday</span><span class="day-num" id="daySelNum3">—</span>
+          <span class="day-full">Wednesday</span><span class="day-abbr">Wed</span><span class="day-num" id="daySelNum3">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn4" onclick="toggleDaySelection(4)">
-          <span>Thursday</span><span class="day-num" id="daySelNum4">—</span>
+          <span class="day-full">Thursday</span><span class="day-abbr">Thu</span><span class="day-num" id="daySelNum4">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn5" onclick="toggleDaySelection(5)">
-          <span>Friday</span><span class="day-num" id="daySelNum5">—</span>
+          <span class="day-full">Friday</span><span class="day-abbr">Fri</span><span class="day-num" id="daySelNum5">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn6" onclick="toggleDaySelection(6)">
-          <span>Saturday</span><span class="day-num" id="daySelNum6">—</span>
+          <span class="day-full">Saturday</span><span class="day-abbr">Sat</span><span class="day-num" id="daySelNum6">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
       </div>
