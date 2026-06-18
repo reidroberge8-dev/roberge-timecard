@@ -3296,6 +3296,8 @@ function toggleNoLunch(i) {
 function calcTotal() {
   let total = 0;
   DAYS.forEach((_, i) => {
+    const btn = document.getElementById('daySelBtn' + i);
+    if (!btn || !btn.classList.contains('selected')) return;
     const v = parseFloat(document.getElementById('hrs' + i).value);
     if (!isNaN(v)) total += v;
   });
