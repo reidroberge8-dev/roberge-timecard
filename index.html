@@ -3146,10 +3146,12 @@ function toggleDaySelection(i) {
     btn.classList.add('selected');
     row.classList.add('day-active', 'open');
     // Re-apply defaults if fields were cleared
-    const startEl = document.getElementById('start' + i);
-    const endEl   = document.getElementById('end'   + i);
-    if (startEl && !startEl.value) startEl.value = '06:30';
-    if (endEl   && !endEl.value)   endEl.value   = '15:00';
+    const startEl      = document.getElementById('start'      + i);
+    const endEl        = document.getElementById('end'        + i);
+    const lunchStartEl = document.getElementById('lunchStart' + i);
+    if (startEl      && !startEl.value)      startEl.value      = '06:30';
+    if (endEl        && !endEl.value)        endEl.value        = '15:00';
+    if (lunchStartEl && !lunchStartEl.value) lunchStartEl.value = '11:30';
     calcDay(i);
   }
   calcTotal();
@@ -3399,6 +3401,14 @@ function clearDraft() {
     clearDayFields(i);
   });
   calcTotal();
+  // Re-set week-end to current Saturday after clear
+  (function() {
+    const t = new Date(), s = new Date(t);
+    s.setDate(t.getDate() + (6 - t.getDay()));
+    const str = s.getFullYear() + '-' + String(s.getMonth()+1).padStart(2,'0') + '-' + String(s.getDate()).padStart(2,'0');
+    document.getElementById('weekEnd').value = str;
+    updateDateLabels();
+  })();
   showToast('Form cleared');
 }
 
@@ -3477,6 +3487,14 @@ function resetForm() {
     clearDayFields(i);
   });
   calcTotal();
+  // Re-set week-end to current Saturday after clear
+  (function() {
+    const t = new Date(), s = new Date(t);
+    s.setDate(t.getDate() + (6 - t.getDay()));
+    const str = s.getFullYear() + '-' + String(s.getMonth()+1).padStart(2,'0') + '-' + String(s.getDate()).padStart(2,'0');
+    document.getElementById('weekEnd').value = str;
+    updateDateLabels();
+  })();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
