@@ -1000,31 +1000,31 @@
       </div>
       <div class="day-selector-grid" id="daySelectorGrid">
         <button type="button" class="day-sel-btn" id="daySelBtn0" onclick="toggleDaySelection(0)">
-          <span>SUN</span><span class="day-num" id="daySelNum0">—</span>
+          <span>Sunday</span><span class="day-num" id="daySelNum0">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn1" onclick="toggleDaySelection(1)">
-          <span>MON</span><span class="day-num" id="daySelNum1">—</span>
+          <span>Monday</span><span class="day-num" id="daySelNum1">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn2" onclick="toggleDaySelection(2)">
-          <span>TUE</span><span class="day-num" id="daySelNum2">—</span>
+          <span>Tuesday</span><span class="day-num" id="daySelNum2">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn3" onclick="toggleDaySelection(3)">
-          <span>WED</span><span class="day-num" id="daySelNum3">—</span>
+          <span>Wednesday</span><span class="day-num" id="daySelNum3">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn4" onclick="toggleDaySelection(4)">
-          <span>THU</span><span class="day-num" id="daySelNum4">—</span>
+          <span>Thursday</span><span class="day-num" id="daySelNum4">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn5" onclick="toggleDaySelection(5)">
-          <span>FRI</span><span class="day-num" id="daySelNum5">—</span>
+          <span>Friday</span><span class="day-num" id="daySelNum5">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
         <button type="button" class="day-sel-btn" id="daySelBtn6" onclick="toggleDaySelection(6)">
-          <span>SAT</span><span class="day-num" id="daySelNum6">—</span>
+          <span>Saturday</span><span class="day-num" id="daySelNum6">—</span>
           <span class="day-worked-label">&#10003; Worked</span>
         </button>
       </div>
@@ -1039,7 +1039,7 @@
       <div class="days-grid" id="daysGrid">
       <div class="day-row" id="dayRow0">
         <div class="day-header" onclick="toggleDay(0)" aria-expanded="false">
-          <span class="day-name">SUN</span>
+          <span class="day-name">Sunday</span>
           <span class="day-date-display" id="dayDate0">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge0">—</span>
           <span class="day-toggle">
@@ -1050,6 +1050,13 @@
         </div>
         <div class="day-body" id="dayBody0">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job0" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job0').classList.remove('show');">
+                <span class="field-err" id="err-job0">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -1199,13 +1206,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch0" onchange="toggleNoLunch(0)">
@@ -1302,16 +1302,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs0" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job0" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job0').classList.remove('show');">
-                <span class="field-err" id="err-job0">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -1324,7 +1326,7 @@
       </div>
       <div class="day-row" id="dayRow1">
         <div class="day-header" onclick="toggleDay(1)" aria-expanded="false">
-          <span class="day-name">MON</span>
+          <span class="day-name">Monday</span>
           <span class="day-date-display" id="dayDate1">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge1">—</span>
           <span class="day-toggle">
@@ -1335,6 +1337,13 @@
         </div>
         <div class="day-body" id="dayBody1">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job1" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job1').classList.remove('show');">
+                <span class="field-err" id="err-job1">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -1484,13 +1493,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch1" onchange="toggleNoLunch(1)">
@@ -1587,16 +1589,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs1" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job1" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job1').classList.remove('show');">
-                <span class="field-err" id="err-job1">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -1609,7 +1613,7 @@
       </div>
       <div class="day-row" id="dayRow2">
         <div class="day-header" onclick="toggleDay(2)" aria-expanded="false">
-          <span class="day-name">TUE</span>
+          <span class="day-name">Tuesday</span>
           <span class="day-date-display" id="dayDate2">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge2">—</span>
           <span class="day-toggle">
@@ -1620,6 +1624,13 @@
         </div>
         <div class="day-body" id="dayBody2">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job2" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job2').classList.remove('show');">
+                <span class="field-err" id="err-job2">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -1769,13 +1780,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch2" onchange="toggleNoLunch(2)">
@@ -1872,16 +1876,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs2" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job2" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job2').classList.remove('show');">
-                <span class="field-err" id="err-job2">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -1894,7 +1900,7 @@
       </div>
       <div class="day-row" id="dayRow3">
         <div class="day-header" onclick="toggleDay(3)" aria-expanded="false">
-          <span class="day-name">WED</span>
+          <span class="day-name">Wednesday</span>
           <span class="day-date-display" id="dayDate3">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge3">—</span>
           <span class="day-toggle">
@@ -1905,6 +1911,13 @@
         </div>
         <div class="day-body" id="dayBody3">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job3" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job3').classList.remove('show');">
+                <span class="field-err" id="err-job3">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -2054,13 +2067,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch3" onchange="toggleNoLunch(3)">
@@ -2157,16 +2163,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs3" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job3" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job3').classList.remove('show');">
-                <span class="field-err" id="err-job3">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -2179,7 +2187,7 @@
       </div>
       <div class="day-row" id="dayRow4">
         <div class="day-header" onclick="toggleDay(4)" aria-expanded="false">
-          <span class="day-name">THU</span>
+          <span class="day-name">Thursday</span>
           <span class="day-date-display" id="dayDate4">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge4">—</span>
           <span class="day-toggle">
@@ -2190,6 +2198,13 @@
         </div>
         <div class="day-body" id="dayBody4">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job4" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job4').classList.remove('show');">
+                <span class="field-err" id="err-job4">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -2339,13 +2354,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch4" onchange="toggleNoLunch(4)">
@@ -2442,16 +2450,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs4" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job4" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job4').classList.remove('show');">
-                <span class="field-err" id="err-job4">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -2464,7 +2474,7 @@
       </div>
       <div class="day-row" id="dayRow5">
         <div class="day-header" onclick="toggleDay(5)" aria-expanded="false">
-          <span class="day-name">FRI</span>
+          <span class="day-name">Friday</span>
           <span class="day-date-display" id="dayDate5">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge5">—</span>
           <span class="day-toggle">
@@ -2475,6 +2485,13 @@
         </div>
         <div class="day-body" id="dayBody5">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job5" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job5').classList.remove('show');">
+                <span class="field-err" id="err-job5">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -2624,13 +2641,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch5" onchange="toggleNoLunch(5)">
@@ -2727,16 +2737,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs5" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job5" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job5').classList.remove('show');">
-                <span class="field-err" id="err-job5">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -2749,7 +2761,7 @@
       </div>
       <div class="day-row" id="dayRow6">
         <div class="day-header" onclick="toggleDay(6)" aria-expanded="false">
-          <span class="day-name">SAT</span>
+          <span class="day-name">Saturday</span>
           <span class="day-date-display" id="dayDate6">—</span>
           <span class="day-hours-badge no-hours" id="dayBadge6">—</span>
           <span class="day-toggle">
@@ -2760,6 +2772,13 @@
         </div>
         <div class="day-body" id="dayBody6">
           <div class="day-inner">
+            <div class="day-fields day-fields--job">
+              <div class="field full">
+                <label>Job / Location <span class="req">*</span></label>
+                <input type="text" id="job6" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job6').classList.remove('show');">
+                <span class="field-err" id="err-job6">Job / Location required for every day worked</span>
+              </div>
+            </div>
             <div class="day-fields">
               <div class="field">
                 <label>Start Time</label>
@@ -2909,13 +2928,6 @@
               </div>
             </div>
             <div class="lunch-section">
-              <div class="law-notice">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
-                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
-              </div>
               <div class="no-lunch-row">
                 <label class="checkbox-label">
                   <input type="checkbox" id="noLunch6" onchange="toggleNoLunch(6)">
@@ -3012,16 +3024,18 @@
                   </select>
                 </div>
               </div>
+              <div class="law-notice">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#a07020" stroke-width="1.5"/>
+                  <path d="M7 4.5v3M7 9.5v.5" stroke="#a07020" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Per CT state law, employees working 6 or more hours in a day must clock out for a 30-minute unpaid break.
+              </div>
             </div>
             <div class="day-fields" style="margin-top:0.65rem">
               <div class="field full">
                 <label>Hours Worked</label>
                 <input type="text" id="hrs6" class="readonly-calc" readonly placeholder="—">
-              </div>
-              <div class="field full">
-                <label>Job / Location <span class="req">*</span></label>
-                <input type="text" id="job6" placeholder="e.g. 123 Main St - Exterior" oninput="saveDraft(); this.classList.remove('invalid'); document.getElementById('err-job6').classList.remove('show');">
-                <span class="field-err" id="err-job6">Job / Location required for every day worked</span>
               </div>
               <div class="field full">
                 <label>Day Notes <span style="color:#838b8b;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
